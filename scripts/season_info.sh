@@ -1,2 +1,2 @@
 mkdir -p data
-curl http://api.sportradar.us/rugby-league/trial/v3/en/seasons/$1/info.xml?api_key=${API_KEY} -o ./data/$2
+curl http://api.sportradar.us/rugby-league/trial/v3/en/seasons/$2/info.xml?api_key=${API_KEY} -o ./data/$1
