@@ -1,1 +1,2 @@
-curl http://api.sportradar.us/rugby-league/trial/v3/en/seasons/$1/info.xml?api_key=${API_KEY} -o ./data/season_lineups.xml
+mkdir -p data
+curl http://api.sportradar.us/rugby-league/trial/v3/en/seasons/$1/info.xml?api_key=${API_KEY} -o ./data/$2
