@@ -26,6 +26,8 @@
                 maxOccurs="unbounded" />
         </xsd:choice>
     </xsd:complexType>
+
+    
     <xsd:complexType name="seasonT">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string" />
@@ -48,6 +50,7 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
+
     <xsd:complexType name="stageT">
         <xsd:sequence>
             <xsd:element name="groups">
@@ -63,6 +66,7 @@
         <xsd:attribute name="start_date" type="xsd:string" />
         <xsd:attribute name="end_date" type="xsd:string" />
     </xsd:complexType>
+
     <xsd:complexType name="groupT">
         <xsd:sequence>
             <xsd:element name="competitor" minOccurs="1" maxOccurs="unbounded">
@@ -76,12 +80,14 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
+
     <xsd:complexType name="scoreT">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string" />
             <xsd:element name="score" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
+
     <xsd:complexType name="competitorT">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string" />
@@ -96,6 +102,7 @@
         </xsd:sequence>
         <xsd:attribute name="id" type="xsd:string" />
     </xsd:complexType>
+    
     <xsd:complexType name="playerT">
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string" />
