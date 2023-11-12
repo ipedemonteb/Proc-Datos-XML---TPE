@@ -9,6 +9,31 @@ declare function local:error($errorMessage as xs:string) as element(season_data)
   }
 };
 
+declare function local:error-messages($invalid_arguments as xs:boolean, $null_api as xs:boolean, $info_not_found as xs:boolean) as element()* {
+  element season_data{
+    
+    if ($invalid_arguments) then
+      <error>"Invalid Number of Arguments"</error>
+    else (),
+    
+    if ($null_api) then
+      <error>{"Null API Key"}</error>
+    else (),
+    
+    if ($info_not_found) then
+      <error>{
+        if (doc("../data/season_info.xml")//h1) then
+          local:error("Invalid API Key")
+        else if(doc("../data/season_info.xml")//page_not_found) then
+          local:error("Invalid Season ID")
+        else ()
+      }</error>
+    else ()
+
+  }
+};
+
+
 declare function local:generate-xml($seasonId as xs:string) as element(season_data) {
 
   let $seasonInfo := doc("../data/season_info.xml")/season_info
@@ -82,18 +107,8 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
   }
 }; 
 
-if ($invalid_arguments_number) then
-  local:error("Illegal number of arguments")
+
+if($invalid_arguments_number or $null_api_key or $information_not_found) then
+  local:error-messages($invalid_arguments_number, $null_api_key, $information_not_found)
 else
-if ($null_api_key) then
-  local:error("API_KEY not found")
-else
-if ($information_not_found) then
-  if (doc("../data/season_info.xml")//h1) then
-    local:error("Invalid API Key")
-  else if(doc("../data/season_info.xml")//page_not_found) then
-    local:error("Invalid Season ID")
-  else
-    local:generate-xml($season_id)
-else
-  local:generate-xml($season_id)   
+  local:generate-xml($season_id)
