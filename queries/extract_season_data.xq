@@ -25,7 +25,7 @@ declare function local:main-errors($invalid_arguments as xs:boolean, $null_api a
         if (doc("../data/season_info.xml")//h1) then
           "Invalid API Key"
         else if(doc("../data/season_info.xml")//page_not_found) then
-          "Invalid Season ID"
+          "Season not found"
         else ()
       }
     else ()
