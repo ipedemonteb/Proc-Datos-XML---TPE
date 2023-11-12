@@ -25,8 +25,6 @@ fi
 if [ $error -eq 1 ]
 then
     java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" ./queries/extract_season_data.xq -o:./data/season_data.xml
-    
-    # Validate with the schema
     java dom.Writer -v -n -s -f data/$SEASON_DATA_FILE
     echo Data generated at data/$SEASON_DATA_FILE
     java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validation_schema.xsl -o:data/$SEASON_DATA_FILE
@@ -61,11 +59,3 @@ java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validatio
 echo Data generated at data/$SEASON_DATA_FILE
 java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/generate_markdown.xsl -o:data/$MARKDOWN_FILE
 echo Page generated at data/$MARKDOWN_FILE
-
-### COSAS QUE FALTAN
-#   - Intercomunicacion con xq que genera xml con la data para pasarle estados de error previos.
-#   - En caso de que la informacion sea correcta, validar contra el xsd el xml generado.
-
-### ERRORES POSIBLES HASTA ACA
-#   - Cannot convert string "a" to an integer (no entero en $2)
-#   - Id no encontrado !!! NO HANDLEA, guarda EMPTY en season_id
