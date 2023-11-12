@@ -26,17 +26,12 @@ if [ $error -eq 1 ]
 then
     java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" ./queries/extract_season_data.xq -o:./data/season_data.xml
     
-
     # Validate with the schema
     java dom.Writer -v -n -s -f data/$SEASON_DATA_FILE
-    
-
     echo Data generated at data/$SEASON_DATA_FILE
-
+    java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validation_schema.xsl -o:data/$SEASON_DATA_FILE
     java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/generate_markdown.xsl -o:data/$MARKDOWN_FILE
-
     echo Page generated at data/$MARKDOWN_FILE
-
     exit 1
 fi
 
@@ -62,21 +57,9 @@ fi
 
 java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" ./queries/extract_season_data.xq -o:./data/season_data.xml
 
-# Validate with the schema
-java dom.Writer -v -n -s -f data/$SEASON_DATA_FILE
-
-echo VALIDACION SCHEMA: $?
-
-if [ $? -ne 0 ]
-then
-    echo $SEASON_DATA_FILE not validates with schema
-    exit 1
-fi
-
+java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validation_schema.xsl -o:data/$SEASON_DATA_FILE
 echo Data generated at data/$SEASON_DATA_FILE
-
 java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/generate_markdown.xsl -o:data/$MARKDOWN_FILE
-
 echo Page generated at data/$MARKDOWN_FILE
 
 ### COSAS QUE FALTAN
