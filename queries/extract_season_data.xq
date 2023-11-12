@@ -3,31 +3,31 @@ declare variable $invalid_arguments_number as xs:boolean external;
 declare variable $null_api_key as xs:boolean external;
 declare variable $information_not_found as xs:boolean external;
 
-declare function local:error($errorMessage as xs:string) as element(season_data) {
+declare function local:query-errors($errorMessage as xs:string) as element(season_data) {
   element season_data{
     element error{$errorMessage}
   }
 };
 
-declare function local:error-messages($invalid_arguments as xs:boolean, $null_api as xs:boolean, $info_not_found as xs:boolean) as element()* {
+declare function local:main-errors($invalid_arguments as xs:boolean, $null_api as xs:boolean, $info_not_found as xs:boolean) as element()* {
   element season_data{
     
     if ($invalid_arguments) then
-      <error>"Invalid Number of Arguments"</error>
+      element error{"Invalid Number of Arguments"}
     else (),
     
     if ($null_api) then
-      <error>{"Null API Key"}</error>
+      element error{"Null API Key"}
     else (),
     
     if ($info_not_found) then
-      <error>{
+      element error{
         if (doc("../data/season_info.xml")//h1) then
-          local:error("Invalid API Key")
+          "Invalid API Key"
         else if(doc("../data/season_info.xml")//page_not_found) then
-          local:error("Invalid Season ID")
+          "Invalid Season ID"
         else ()
-      }</error>
+      }
     else ()
 
   }
@@ -41,13 +41,13 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
 
   return
   if (empty($seasonInfo/season[@id = $seasonId])) then
-    local:error("Season not found")
+    local:query-errors("Season not found")
   else if (empty($seasonInfo/stages/stage)) then
-    local:error("Stages not found")
+    local:query-errors("Stages not found")
   else if (empty($seasonInfo/stages/stage/groups/group)) then
-    local:error("Groups not found")
+    local:query-errors("Groups not found")
   else if (empty($seasonInfo/stages/stage/groups/group/competitors/competitor)) then
-    local:error("Competitors not found")
+    local:query-errors("Competitors not found")
   else
   element season_data {
     element season {
@@ -84,6 +84,7 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
         }
       }
     },
+    
     element competitors {
       for $competitor in distinct-values($seasonInfo/stages/stage/groups/group/competitors/competitor/@name)
       return
@@ -109,6 +110,6 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
 
 
 if($invalid_arguments_number or $null_api_key or $information_not_found) then
-  local:error-messages($invalid_arguments_number, $null_api_key, $information_not_found)
+  local:main-errors($invalid_arguments_number, $null_api_key, $information_not_found)
 else
   local:generate-xml($season_id)
