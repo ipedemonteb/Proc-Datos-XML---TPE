@@ -77,6 +77,7 @@
             <xsl:text>| Name | Type | Date Of Birth | Nationality | Events Played |&#10;</xsl:text>
             <xsl:text>|------|------|--------------|-------------|--------------|&#10;</xsl:text>
             <xsl:for-each select="./players/player">
+                <xsl:sort select="./events_played" order="descending" data-type="number"/>
                 <xsl:text>| </xsl:text>
                 <xsl:value-of select="name"/>
                 <xsl:text> | </xsl:text>
