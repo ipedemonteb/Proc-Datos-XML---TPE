@@ -1,8 +1,25 @@
-# Proc.-Datos-XML---TPE
+# TPE - Diseño y Procesamiento de Documentos XML
 
-Comandos:
+El presente trabajo consiste en un programa que realiza una consulta a la página de SportRadar (https://developer.sportradar.com/) para obtener las estadísticas un torneo de rugby jugado en un año específico.
 
-- ./scripts/seasons.sh filename.xml
-- ./scripts/season_info.sh <file_name>.xml <season_id>
-- ./scripts/season_lineups.sh <file_name>.xml <season_id>
-- java net.sf.saxon.Query "seasons_file=seasons.xml" "season_prefix=Super League" "season_year=2023" ./queries extract_season_id.xq
+
+## Instrucciones:
+
+1. En primer lugar, se debe poseer una API_key válida para la página de SportRadar.
+
+2. Para ejecutar el programa, se debe correr la siguiente línea de códgio en la terminal: 
+
+   ```sh
+   ./tpe.sh "Rugby League" 1234
+   ```
+Reemplazando "Rugby League" por el torneo que se quiere consultar y 1234 por el año en el que se jugó.
+
+## Integrantes:
+
+Martín Alejandro Barnatán (64463) - mbarnatan@itba.edu.ar
+
+Celestino Garrós (64375) - cgarros@itba.edu.ar
+
+Ignacio Pedemonte Berthoud (64908) - ipedemonteberthoud@itba.edu.ar
+
+Leo Weitz (64365) - lweitz@itba.edu.ar
