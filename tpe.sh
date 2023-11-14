@@ -7,6 +7,7 @@ MARKDOWN_FILE=season_page.md
 error=0
 invalid_arguments_number=0
 null_api_key=0
+year_error=0
 information_not_found=0
 season_id="nullid"
 
@@ -22,10 +23,21 @@ then
     error=1
 fi
 
+if [ $2 -eq $2 2>/dev/null ]
+then
+    if [ $2 -lt 2007 ]
+    then
+        year_error=2
+        error=1
+    fi
+else
+    year_error=1
+    error=1
+fi
+
 if [ $error -eq 1 ]
 then
-    java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" ./queries/extract_season_data.xq -o:./data/season_data.xml
-    java dom.Writer -v -n -s -f data/$SEASON_DATA_FILE
+    java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" "year_error=$year_error" ./queries/extract_season_data.xq -o:./data/season_data.xml
     echo Data generated at data/$SEASON_DATA_FILE
     java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validation_schema.xsl -o:data/$SEASON_DATA_FILE
     java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/generate_markdown.xsl -o:data/$MARKDOWN_FILE
@@ -53,7 +65,7 @@ fi
 ./scripts/season_info.sh $SEASON_INFO_FILE $season_id
 ./scripts/season_lineups.sh $SEASON_LINEUPS_FILE $season_id
 
-java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" ./queries/extract_season_data.xq -o:./data/season_data.xml
+java net.sf.saxon.Query "season_id=$season_id" "invalid_arguments_number=$invalid_arguments_number" "null_api_key=$null_api_key" "information_not_found=$information_not_found" "year_error=$year_error" ./queries/extract_season_data.xq -o:./data/season_data.xml
 
 java net.sf.saxon.Transform -s:data/$SEASON_DATA_FILE -xsl:helpers/add_validation_schema.xsl -o:data/$SEASON_DATA_FILE
 echo Data generated at data/$SEASON_DATA_FILE
