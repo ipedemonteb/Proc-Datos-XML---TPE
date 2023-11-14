@@ -9,7 +9,6 @@ invalid_arguments_number=0
 null_api_key=0
 year_error=0
 information_not_found=0
-season_id="nullid"
 
 if [ $# -ne 2 ]
 then
