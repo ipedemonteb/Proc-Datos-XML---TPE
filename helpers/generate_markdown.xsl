@@ -65,7 +65,7 @@
 
     <xsl:template match="competitors">
         <xsl:text>&#10;---</xsl:text>
-        <xsl:text>&#10;#### Competitors&#10;</xsl:text>
+        <xsl:text>&#10;#### Teams&#10;</xsl:text>
 
 
         <xsl:for-each select="./competitor">
