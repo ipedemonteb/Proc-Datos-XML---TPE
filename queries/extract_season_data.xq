@@ -2,6 +2,7 @@ declare variable $season_id as xs:string external;
 declare variable $invalid_arguments_number as xs:boolean external;
 declare variable $null_api_key as xs:boolean external;
 declare variable $information_not_found as xs:boolean external;
+declare variable $year_error as xs:integer external;
 
 declare function local:query-errors($errorMessage as xs:string) as element(season_data) {
   element season_data{
@@ -9,15 +10,21 @@ declare function local:query-errors($errorMessage as xs:string) as element(seaso
   }
 };
 
-declare function local:main-errors($invalid_arguments as xs:boolean, $null_api as xs:boolean, $info_not_found as xs:boolean) as element()* {
+declare function local:main-errors($invalid_arguments as xs:boolean, $null_api as xs:boolean, $info_not_found as xs:boolean, $year_error as xs:integer) as element()* {
   element season_data{
-    
+
     if ($invalid_arguments) then
-      element error{"Invalid Number of Arguments"}
+      element error{"Invalid number of arguments"}
     else (),
     
     if ($null_api) then
       element error{"Null API Key"}
+    else (),
+
+    if($year_error eq 1)then
+      element error{"Year must be a number"}
+    else if($year_error eq 2) then
+      element error{"Year must be greater or equal to 2007"}
     else (),
     
     if ($info_not_found) then
@@ -109,7 +116,7 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
 }; 
 
 
-if($invalid_arguments_number or $null_api_key or $information_not_found) then
-  local:main-errors($invalid_arguments_number, $null_api_key, $information_not_found)
+if($invalid_arguments_number or $null_api_key or $information_not_found or $year_error ne 0) then
+  local:main-errors($invalid_arguments_number, $null_api_key, $information_not_found, $year_error)
 else
   local:generate-xml($season_id)
