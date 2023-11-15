@@ -98,7 +98,7 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
       element competitor{
         element name {fn:string($competitor)},
         element players {
-          for $player in distinct-values($seasonLineup/lineup/lineups/competitors/competitor[@name = $competitor]/players/player/@id)  (:/sport_event/competitors/competitor[@name = $competitor]/players/player:)
+          for $player in distinct-values($seasonLineup/lineup/lineups/competitors/competitor[@name = $competitor]/players/player/@id)
           let $actual := ($seasonLineup/lineup/lineups/competitors/competitor/players/player[@id = $player])[1]
           return
           element player {
@@ -107,7 +107,7 @@ declare function local:generate-xml($seasonId as xs:string) as element(season_da
             element type {fn:string($actual/@type)},
             element date_of_birth {fn:string($actual/@date_of_birth)},
             element nationality {fn:string($actual/@nationality)},
-            element events_played {count($seasonLineup/lineup/lineups/competitors/competitor/players/player[@id = $player and @played = 'true'])}
+            element events_played {count($seasonLineup/lineup/lineups/competitors/competitor[@name = $competitor]/players/player[@id = $player and @played = 'true'])}
           }
         }
       }
